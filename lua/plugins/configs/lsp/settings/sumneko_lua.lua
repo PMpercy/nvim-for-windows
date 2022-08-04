@@ -1,0 +1,51 @@
+local status_ok, lua_dev = pcall(require, "lua-dev")
+if not status_ok then
+  return
+end
+
+local lspconfig = require('lspconfig')
+lspconfig.sumneko_lua.setup(lua_dev)
+
+return {
+  settings = {
+    Lua = {
+      type = {
+        weakUnionCheck = true,
+        weakNilCheck = true,
+        castNumberToInteger = true,
+      },
+      format = {
+        enable = true,
+      },
+      hint = {
+        enable = true,
+        arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
+        await = true,
+        paramName = "Disable", -- "All", "Literal", "Disable"
+        paramType = false,
+        semicolon = "Disable", -- "All", "SameLine", "Disable"
+        setType = true,
+      },
+      -- spell = {"the"}
+      runtime = {
+        version = "LuaJIT",
+        special = {
+          reload = "require",
+        },
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = {
+          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+          [vim.fn.stdpath "config" .. "/lua"] = true,
+          --[vim.fn.datapath "config" .. "/lua"] = true,
+        },
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
