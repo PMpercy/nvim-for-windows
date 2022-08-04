@@ -46,6 +46,8 @@ local kind_icons = icons.kind
 vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
 vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
 
+vim.opt.completeopt = { "menuone", "noselect" }
+
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -116,10 +118,10 @@ cmp.setup {
 
 
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = { "kind", "abbr" },
     format = function(entry, vim_item)
       -- Kind icons
-      vim_item.kind = kind_icons[vim_item.kind]
+      vim_item.kind = string.format('%s', kind_icons[vim_item.kind]) -- This concatonates the icons with the name of the item kind
 
 
       if entry.source.name == "emoji" then
@@ -139,68 +141,61 @@ cmp.setup {
 
       -- NOTE: order matters
       vim_item.menu = ({
-        nvim_lsp = "",
-        nvim_lua = "",
-        luasnip = "",
-        buffer = "",
-        path = "",
-        emoji = "",
+        nvim_lsp = "[LSP]",
+        nvim_lua = "[Lua]",
+        luasnip = "[LuaSnip]",
+        buffer = "[Buffer]",
+        path = "[Path]",
+        emoji = "[Emoji]",
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = "crates", group_index = 1 },
+    { name = "crates" },
     {
       name = "nvim_lsp",
       filter = function(entry, ctx)
         local kind = require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
 
-
         if kind == "Text" then
           return true
         end
       end,
-      group_index = 2,
     },
-    { name = "nvim_lua", group_index = 2 },
-    { name = "luasnip", group_index = 2 },
+    { name = "nvim_lua" },
+    { name = "luasnip" },
     {
       name = "buffer",
-      group_index = 2,
       filter = function(entry, ctx)
         if not contains(buffer_fts, ctx.prev_context.filetype) then
           return true
         end
       end,
     },
-    { name = "cmp_tabnine", group_index = 2 },
-    { name = "path", group_index = 2 },
-    { name = "emoji", group_index = 2 },
-    { name = "lab.quick_data", keyword_length = 4, group_index = 2 },
+    { name = "path" },
+    { name = "emoji" },
+    { name = "lab.quick_data", keyword_length = 4 },
   },
+
   sorting = {
-    priority_weight = 2,
+    -- priority_weight = 2,
     comparators = {
-      -- require("copilot_cmp.comparators").prioritize,
-      -- require("copilot_cmp.comparators").score,
-      compare.offset,
-      compare.exact,
+      -- compare.offset,
+      -- compare.exact,
       -- compare.scopes,
-      compare.score,
-      compare.recently_used,
-      compare.locality,
+      -- compare.score,
+      -- compare.recently_used,
+      -- compare.locality,
       -- compare.kind,
-      compare.sort_text,
-      compare.length,
-      compare.order,
-      -- require("copilot_cmp.comparators").prioritize,
-      -- require("copilot_cmp.comparators").score,
+      -- compare.sort_text,
+      -- compare.length,
+      -- compare.order,
     },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
-    select = false,
+    select = true,
   },
   window = {
     documentation = true,

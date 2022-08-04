@@ -27,6 +27,6 @@ end
 require("plugins.configs.lsp.mason")
 require("plugins.configs.lsp.handlers").setup()
 require("plugins.configs.lsp.ls-inlayhints")
-
+require("plugins.configs.lsp.null-ls")
 
 return M

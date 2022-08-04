@@ -23,11 +23,11 @@ M.kind = {
   Event = "",
   Operator = "",
   TypeParameter = "",
-  Constant = " ",
-  Constructor = " ",
-  Module = " ",
-  Property = " ",
-  Variable = " ",
+  Constant = "",
+  Constructor = "",
+  Module = "",
+  Property = "",
+  Variable = "",
 }
 
 M.ui = {
@@ -84,14 +84,14 @@ M.misc = {
 }
 
 M.git = {
-  Add = "",
-  Mod = "",
-  Remove = "",
-  Ignore = "",
-  Rename = "",
-  Diff = "",
-  Repo = "",
-  Octoface = "",
+  Add = " ",
+  Mod = " ",
+  Remove = " ",
+  Ignore = " ",
+  Rename = " ",
+  Diff = " ",
+  Repo = " ",
+  Octoface = " ",
 }
 M.git_explorer = {
   unstaged = "✗",

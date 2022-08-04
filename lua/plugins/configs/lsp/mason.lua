@@ -18,6 +18,19 @@ local servers = {
   "sumneko_lua",
 }
 
+local settings = {
+  ui = {
+    border = "rounded",
+    icons = {
+      package_installed = "◍",
+      package_pending = "◍",
+      package_uninstalled = "◍",
+    },
+  },
+  log_level = vim.log.levels.INFO,
+  max_concurrent_installers = 4,
+}
+
 mason.setup(settings)
 mason_lspconfig.setup {
   ensure_installed = servers,
@@ -64,12 +77,20 @@ for _, server in pairs(servers) do
     -- goto continue
   end
 
+  if server == "jsonls"  then
+    local jsonls_opts = require "plugins.configs.lsp.settings.jsonls"
+    opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
+  end
+
+  if server == "emmet_ls" then
+    local emmet_ls_opts = require "plugins.configs.lsp.settings.emmet_ls"
+    opts = vim.tbl_deep_extend("force", emmet_ls_opts, opts)
+  end
 
   if server == "tsserver" then
     local tsserver_opts = require "plugins.configs.lsp.settings.tsserver"
     opts = vim.tbl_deep_extend("force", tsserver_opts, opts)
   end
-
 
   lspconfig[server].setup(opts)
   ::continue::
